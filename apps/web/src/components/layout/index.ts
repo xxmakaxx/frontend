@@ -1,0 +1,1 @@
+export { ClienteHeader } from './ClienteHeader';

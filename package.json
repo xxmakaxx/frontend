@@ -1,0 +1,12 @@
+{
+  "name": "alamesa",
+  "private": true,
+  "version": "0.1.0",
+  "scripts": {
+    "web": "pnpm --filter @alamesa/web dev",
+    "build:web": "pnpm --filter @alamesa/web build"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3"
+  }
+}

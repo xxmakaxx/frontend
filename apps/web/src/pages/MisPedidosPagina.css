@@ -1,0 +1,131 @@
+.pedidos-pagina {
+  background-color: var(--color-bg);
+  min-height: calc(100vh - 80px);
+  padding: var(--spacing-lg);
+}
+
+.pedidos-pagina__contenedor {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.pedidos-pagina__cabecera {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--spacing-lg);
+}
+
+.pedidos-pagina__titulo {
+  font-size: var(--font-size-2xl);
+  color: var(--color-primary);
+}
+
+.pedidos-pagina__lista {
+  display: flex;
+  flex-direction: column;
+  gap: var(--spacing-lg);
+}
+
+.pedidos-pagina__vacio,
+.pedidos-pagina__cargando,
+.pedidos-pagina__error {
+  text-align: center;
+  padding: var(--spacing-xl);
+}
+
+.pedidos-pagina__cargando {
+  font-size: var(--font-size-lg);
+  color: var(--color-text-secondary);
+}
+
+.pedidos-pagina__error {
+  color: var(--color-error);
+  font-size: var(--font-size-lg);
+}
+
+.pedido-card {
+  padding: var(--spacing-lg);
+}
+
+.pedido-card__encabezado {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: var(--spacing-lg);
+  border-bottom: 2px solid var(--color-border);
+  padding-bottom: var(--spacing-lg);
+}
+
+.pedido-card__id {
+  font-size: var(--font-size-lg);
+  font-weight: var(--font-weight-bold);
+  margin-bottom: var(--spacing-xs);
+}
+
+.pedido-card__fecha {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+}
+
+.pedido-card__estado {
+  border: 2px solid;
+  padding: var(--spacing-sm) var(--spacing-md);
+  border-radius: var(--radius-md);
+  font-weight: var(--font-weight-semibold);
+}
+
+.pedido-card__items {
+  margin-bottom: var(--spacing-lg);
+}
+
+.pedido-card__items-titulo {
+  font-weight: var(--font-weight-semibold);
+  margin-bottom: var(--spacing-sm);
+  color: var(--color-text);
+}
+
+.pedido-item {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: var(--spacing-md);
+  padding: var(--spacing-sm) 0;
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.pedido-item:last-child {
+  border-bottom: none;
+}
+
+.pedido-card__pie {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  gap: var(--spacing-lg);
+  padding-top: var(--spacing-lg);
+  border-top: 2px solid var(--color-border);
+}
+
+.pedido-card__direccion {
+  font-size: var(--font-size-sm);
+  color: var(--color-text-secondary);
+  margin-bottom: var(--spacing-sm);
+}
+
+.pedido-card__total {
+  font-size: var(--font-size-lg);
+  color: var(--color-primary);
+}
+
+@media (max-width: 600px) {
+  .pedidos-pagina__cabecera {
+    flex-direction: column;
+    gap: var(--spacing-md);
+  }
+
+  .pedido-card__pie {
+    flex-direction: column;
+  }
+}

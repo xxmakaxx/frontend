@@ -1,0 +1,300 @@
+import { Local, Plato, Promocion, Usuario, Pedido } from '../../types';
+
+export const mockLocales: Local[] = [
+  {
+    id: 'local_001',
+    name: 'Pizzería Don Carlos',
+    category: 'Pizzería',
+    description: 'Pizzas artesanales con masa madre desde 1985. Tradición familiar en cada mordida.',
+    image: 'https://images.unsplash.com/photo-1572635148997-b388f80f6a39',
+    logo: 'https://picsum.photos/seed/logopizza/80/80',
+    coverImage: 'https://images.unsplash.com/photo-1572635148997-b388f80f6a39',
+    rating: 4.8,
+    reviews: 145,
+    distance: 0.8,
+    deliveryTime: 25,
+    isOpen: true,
+    address: 'Calle Principal 123, Montevideo',
+    phone: '+598 2 1234567',
+    menuCategories: ['Pizzas', 'Pastas', 'Bebidas', 'Postres'],
+    deliveryCost: 100,
+    minOrder: 300
+  },
+  {
+    id: 'local_002',
+    name: 'Sushi House',
+    category: 'Sushi',
+    description: 'Sushi fresco preparado diariamente con ingredientes importados de Japón.',
+    image: 'https://images.unsplash.com/photo-1600913827808-30a3d9bcaf34',
+    logo: 'https://picsum.photos/seed/logosushi/80/80',
+    coverImage: 'https://images.unsplash.com/photo-1600913827808-30a3d9bcaf34',
+    rating: 4.6,
+    reviews: 89,
+    distance: 1.2,
+    deliveryTime: 35,
+    isOpen: true,
+    address: 'Av. Japón 456, Pocitos',
+    phone: '+598 2 2345678',
+    menuCategories: ['Sushi', 'Ramen', 'Gyozas', 'Bebidas'],
+    deliveryCost: 120,
+    minOrder: 400
+  },
+  {
+    id: 'local_003',
+    name: 'Burger Bros',
+    category: 'Hamburguesas',
+    description: 'Hamburguesas artesanales con carne de res 100% nacional. Sin conservantes.',
+    image: 'https://images.unsplash.com/photo-1677561713604-989d6a76424a',
+    logo: 'https://picsum.photos/seed/logoburger/80/80',
+    coverImage: 'https://images.unsplash.com/photo-1677561713604-989d6a76424a',
+    rating: 4.5,
+    reviews: 210,
+    distance: 0.5,
+    deliveryTime: 20,
+    isOpen: true,
+    address: 'Rambla 789, Parque Rodó',
+    phone: '+598 2 3456789',
+    menuCategories: ['Hamburguesas', 'Papas', 'Bebidas'],
+    deliveryCost: 80,
+    minOrder: 250
+  },
+  {
+    id: 'local_005',
+    name: 'El Cevichero',
+    category: 'Cevichería',
+    description: 'Los mejores ceviches y tiraditos de la ciudad. Pescado fresco del día.',
+    image: 'https://images.unsplash.com/photo-1535399831218-d5bd36d1a6b3',
+    logo: 'https://picsum.photos/seed/logoceviche/80/80',
+    coverImage: 'https://images.unsplash.com/photo-1535399831218-d5bd36d1a6b3',
+    rating: 4.9,
+    reviews: 178,
+    distance: 1.5,
+    deliveryTime: 30,
+    isOpen: true,
+    address: 'Puerto Viejo 234, Ciudad Vieja',
+    phone: '+598 2 5678901',
+    menuCategories: ['Ceviches', 'Tiraditos', 'Anticuchos', 'Bebidas'],
+    deliveryCost: 110,
+    minOrder: 350
+  },
+  {
+    id: 'local_006',
+    name: 'La Trattoria',
+    category: 'Pastas',
+    description: 'Pastas frescas hechas a mano cada día. Recetas del norte de Italia.',
+    image: 'https://images.unsplash.com/photo-1579027989536-b7b1f875659b',
+    logo: 'https://picsum.photos/seed/logotrattoria/80/80',
+    coverImage: 'https://images.unsplash.com/photo-1579027989536-b7b1f875659b',
+    rating: 4.7,
+    reviews: 134,
+    distance: 0.9,
+    deliveryTime: 28,
+    isOpen: true,
+    address: 'Villa Italiana 567, Punta Carretas',
+    phone: '+598 2 6789012',
+    menuCategories: ['Pastas', 'Risottos', 'Ensaladas', 'Bebidas'],
+    deliveryCost: 95,
+    minOrder: 280
+  },
+  {
+    id: 'local_007',
+    name: 'La Boulangerie',
+    category: 'Panadería',
+    description: 'Pan artesanal francés y pasteles elaborados con técnicas tradicionales.',
+    image: 'https://images.unsplash.com/photo-1568254183919-78a4f43a2877',
+    logo: 'https://picsum.photos/seed/logobakery/80/80',
+    coverImage: 'https://images.unsplash.com/photo-1568254183919-78a4f43a2877',
+    rating: 4.4,
+    reviews: 92,
+    distance: 0.3,
+    deliveryTime: 15,
+    isOpen: true,
+    address: 'Bulevar Artigas 890, Prado',
+    phone: '+598 2 7890123',
+    menuCategories: ['Panes', 'Medialunas', 'Tortas', 'Café'],
+    deliveryCost: 60,
+    minOrder: 150
+  },
+  {
+    id: 'local_010',
+    name: 'Veggie Garden',
+    category: 'Pastas',
+    description: 'Cocina vegetariana y vegana creativa. Saludable y deliciosa.',
+    image: 'https://picsum.photos/seed/veggie/400/250',
+    logo: 'https://picsum.photos/seed/logoveggie/80/80',
+    coverImage: 'https://picsum.photos/seed/coverveggie/1200/400',
+    rating: 4.6,
+    reviews: 88,
+    distance: 1.1,
+    deliveryTime: 22,
+    isOpen: true,
+    address: 'Naturaleza 765, Buceo',
+    phone: '+598 2 0123456',
+    menuCategories: ['Bowls', 'Wraps', 'Ensaladas', 'Smoothies'],
+    deliveryCost: 85,
+    minOrder: 200
+  }
+];
+
+export const mockPlatos: Plato[] = [
+  {
+    id: 'plato_001',
+    localId: 'local_001',
+    name: 'Pizza Margarita',
+    description: 'Tomate San Marzano, mozzarella fior di latte, albahaca fresca y aceite de oliva.',
+    image: 'https://images.unsplash.com/photo-1574071318508-1cdbab80d002',
+    price: 450,
+    originalPrice: 500,
+    discount: 10,
+    rating: 4.9,
+    stock: 15,
+    category: 'Pizzas',
+    isVisible: true
+  },
+  {
+    id: 'plato_002',
+    localId: 'local_001',
+    name: 'Pizza Pepperoni',
+    description: 'Pepperoni importado, queso mozzarella extra y orégano fresco.',
+    image: 'https://images.unsplash.com/photo-1534308983496-4fabb1a015ee',
+    price: 480,
+    originalPrice: null,
+    discount: null,
+    rating: 4.7,
+    stock: 8,
+    category: 'Pizzas',
+    isVisible: true
+  },
+  {
+    id: 'plato_003',
+    localId: 'local_001',
+    name: 'Pizza 4 Quesos',
+    description: 'Mozzarella, provolone, gorgonzola y parmesano gratinados.',
+    image: 'https://images.unsplash.com/photo-1732223229355-95a1433404bf',
+    price: 520,
+    originalPrice: null,
+    discount: null,
+    rating: 4.8,
+    stock: 10,
+    category: 'Pizzas',
+    isVisible: true
+  },
+  {
+    id: 'plato_004',
+    localId: 'local_001',
+    name: 'Pasta Carbonara',
+    description: 'Spaghetti con panceta, yema de huevo, pecorino romano y pimienta negra.',
+    image: 'https://images.unsplash.com/photo-1608756687911-aa1599ab3bd9',
+    price: 390,
+    originalPrice: null,
+    discount: null,
+    rating: 4.6,
+    stock: 12,
+    category: 'Pastas',
+    isVisible: true
+  },
+  {
+    id: 'plato_005',
+    localId: 'local_001',
+    name: 'Pasta Bolognesa',
+    description: 'Tagliatelle con ragú de carne lentamente cocinado durante 4 horas.',
+    image: 'https://images.unsplash.com/photo-1611270629569-8b357cb88da9',
+    price: 420,
+    originalPrice: 450,
+    discount: 7,
+    rating: 4.5,
+    stock: 2,
+    category: 'Pastas',
+    isVisible: true
+  },
+  {
+    id: 'plato_006',
+    localId: 'local_001',
+    name: 'Coca-Cola 500ml',
+    description: 'Bebida fría',
+    image: 'https://images.unsplash.com/photo-1554866585-cd94860890b7',
+    price: 120,
+    originalPrice: null,
+    discount: null,
+    rating: null,
+    stock: 50,
+    category: 'Bebidas',
+    isVisible: true
+  },
+  {
+    id: 'plato_007',
+    localId: 'local_001',
+    name: 'Agua Mineral 500ml',
+    description: 'Con o sin gas',
+    image: 'https://images.unsplash.com/photo-1550505095-81378a674395',
+    price: 80,
+    originalPrice: null,
+    discount: null,
+    rating: null,
+    stock: 50,
+    category: 'Bebidas',
+    isVisible: true
+  }
+];
+
+export const mockPromociones: Promocion[] = [
+  {
+    id: 'promo_001',
+    localId: 'local_001',
+    name: '10% en Pizzas Clásicas',
+    description: 'Descuento en todas las pizzas de la sección clásicas',
+    discountType: 'percentage',
+    discountValue: 10,
+    startDate: '2026-05-01',
+    endDate: '2026-05-31',
+    startTime: '12:00',
+    endTime: '23:00',
+    platoIds: ['plato_001', 'plato_002', 'plato_003'],
+    isActive: true,
+    createdAt: '2024-04-28'
+  },
+  {
+    id: 'promo_002',
+    localId: 'local_001',
+    name: 'Pasta + Bebida $50 off',
+    description: 'Pide cualquier pasta y llevate una bebida con $50 de descuento',
+    discountType: 'fixed',
+    discountValue: 50,
+    startDate: '2026-05-08',
+    endDate: '2026-05-31',
+    startTime: null,
+    endTime: null,
+    platoIds: ['plato_004', 'plato_005'],
+    isActive: true,
+    createdAt: '2024-05-06'
+  }
+];
+
+export const mockUsuarios: Usuario[] = [
+  {
+    id: 'mockuser_001',
+    name: 'Usuario Mock',
+    email: 'mockuser@alamesa.food',
+    phone: '+598 99 999999',
+    role: 'client',
+    createdAt: '2024-01-01'
+  }
+];
+
+export const mockPedidosCliente: Pedido[] = [
+  {
+    id: 'pedido_001',
+    usuarioId: 'mockuser_001',
+    localId: 'local_001',
+    items: [
+      { platoId: 'plato_001', cantidad: 2, precioUnitario: 450, nombre: 'Pizza Margarita' },
+      { platoId: 'plato_006', cantidad: 1, precioUnitario: 120, nombre: 'Coca-Cola 500ml' }
+    ],
+    total: 1020,
+    direccion: 'Calle Falsa 123, Apto 4B',
+    estado: 'entregado',
+    fechaCreacion: '2026-05-15T14:30:00',
+    fechaEstimadaEntrega: '2026-05-15T15:00:00',
+    metodoPago: 'tarjeta'
+  }
+];
