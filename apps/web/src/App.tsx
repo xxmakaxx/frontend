@@ -1,35 +1,30 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router';
-import { usAutenticacionStore } from '@alamesa/shared';
-import { ClienteHeader } from '@/components/layout';
-import { LoginPagina } from '@/pages/LoginPagina';
-import { RegistroPagina } from '@/pages/RegistroPagina';
-import { PaginaInicio } from '@/pages/PaginaInicio';
-import { LocalDetailPagina } from '@/pages/LocalDetailPagina';
-import { CheckoutPagina } from '@/pages/CheckoutPagina';
-import { MisPedidosPagina } from '@/pages/MisPedidosPagina';
-import './App.css';
+import { createBrowserRouter, RouterProvider, Navigate } from 'react-router-dom';
+import PaginaLogin from './pages/PaginaLogin';
+import PaginaRegistro from './pages/PaginaRegistro';
+import PaginaInicio from './pages/PaginaInicio';
+import PaginaLocal from './pages/PaginaLocal';
+import PaginaCheckout from './pages/PaginaCheckout';
+import PaginaMisPedidos from './pages/PaginaMisPedidos';
+import RutaProtegida from './components/layout/RutaProtegida';
+import './styles/variables.css';
+import './styles/base.css';
 
-function App() {
-  const { token } = usAutenticacionStore();
+const enrutador = createBrowserRouter([
+  { path: '/login', element: <PaginaLogin /> },
+  { path: '/registro', element: <PaginaRegistro /> },
+  { path: '/', element: <PaginaInicio /> },
+  { path: '/local/:id', element: <PaginaLocal /> },
+  {
+    path: '/checkout',
+    element: <RutaProtegida><PaginaCheckout /></RutaProtegida>,
+  },
+  {
+    path: '/mis-pedidos',
+    element: <RutaProtegida><PaginaMisPedidos /></RutaProtegida>,
+  },
+  { path: '*', element: <Navigate to="/" replace /> },
+]);
 
-  return (
-    <Router>
-      <div className="app">
-        <ClienteHeader />
-        <main className="app__main">
-          <Routes>
-            <Route path="/" element={<PaginaInicio />} />
-            <Route path="/local/:id" element={<LocalDetailPagina />} />
-            <Route path="/login" element={token ? <Navigate to="/" /> : <LoginPagina />} />
-            <Route path="/registro" element={token ? <Navigate to="/" /> : <RegistroPagina />} />
-            <Route path="/checkout" element={token ? <CheckoutPagina /> : <Navigate to="/login" />} />
-            <Route path="/mis-pedidos" element={token ? <MisPedidosPagina /> : <Navigate to="/login" />} />
-            <Route path="*" element={<Navigate to="/" />} />
-          </Routes>
-        </main>
-      </div>
-    </Router>
-  );
+export default function App() {
+  return <RouterProvider router={enrutador} />;
 }
-
-export default App;

@@ -1,25 +1,23 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { QueryClientProvider, QueryClient } from '@tanstack/react-query';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { instalarMock } from '@alamesa/shared';
 import App from './App';
-import './index.css';
+
+if (import.meta.env.VITE_USAR_MOCK === 'true') {
+  instalarMock();
+}
 
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      retry: 1,
-      refetchOnWindowFocus: false
-    }
-  }
+      retry: false,
+      staleTime: 5 * 60 * 1000,
+    },
+  },
 });
 
-const rootElement = document.getElementById('root');
-
-if (!rootElement) {
-  throw new Error('Root element not found');
-}
-
-ReactDOM.createRoot(rootElement).render(
+ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
       <App />

@@ -1,0 +1,92 @@
+.registro-page {
+  min-height: 100vh;
+  background: #fff7ed;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: var(--space-8) var(--space-6);
+}
+
+.registro-card {
+  width: 100%;
+  max-width: 1040px;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  overflow: hidden;
+  border-radius: var(--border-radius-xl);
+  background: white;
+  border: 1px solid rgba(244, 121, 32, 0.12);
+  box-shadow: 0 24px 80px rgba(244, 121, 32, 0.16);
+  min-height: 640px;
+}
+
+.registro-brand {
+  background: linear-gradient(160deg, #f47920 0%, #d46a1a 100%);
+  position: relative;
+}
+
+.registro-brand__content {
+  height: 100%;
+  padding: var(--space-8) var(--space-6);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.registro-logo-ico {
+  width: 80px;
+  height: 80px;
+  border-radius: var(--border-radius-xl);
+  background: white;
+  object-fit: contain;
+  padding: 8px;
+}
+
+.registro-logo-ico--small { width: 50px; height: 50px; }
+
+.registro-brand-texto { color: white; }
+
+.registro-badge {
+  display: inline-block;
+  padding: var(--space-2) var(--space-4);
+  border-radius: var(--border-radius-full);
+  background: rgba(255,255,255,0.2);
+  font-size: var(--font-size-sm);
+  margin-bottom: var(--space-4);
+}
+
+.registro-brand-texto h2 { font-size: 1.8rem; font-weight: 800; line-height: 1.2; color: white; }
+
+.registro-form-section {
+  padding: var(--space-7) var(--space-8);
+  display: flex;
+  flex-direction: column;
+}
+
+.registro-mobile-brand { display: none; margin-bottom: var(--space-6); }
+
+.registro-heading { margin-bottom: var(--space-6); }
+.registro-heading p { color: var(--color-primary); font-weight: 700; margin-bottom: var(--space-2); }
+.registro-heading h1 { font-size: 1.8rem; font-weight: 800; color: #111827; margin-bottom: var(--space-2); }
+.registro-heading span { color: rgba(31, 41, 55, 0.6); font-size: var(--font-size-sm); }
+
+.registro-form { flex: 1; display: flex; flex-direction: column; gap: var(--space-6); }
+
+.registro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-4); }
+
+.registro-campo-full { grid-column: 1 / -1; }
+
+.registro-login-link { margin-top: var(--space-5); text-align: center; color: rgba(31,41,55,0.55); font-size: var(--font-size-sm); }
+.registro-login-link a { color: var(--color-primary); font-weight: 700; }
+
+@media (max-width: 900px) {
+  .registro-card { grid-template-columns: 1fr; }
+  .registro-brand { display: none; }
+  .registro-mobile-brand { display: flex; }
+  .registro-form-section { padding: var(--space-6); }
+}
+
+@media (max-width: 520px) {
+  .registro-page { padding: var(--space-4); }
+  .registro-grid { grid-template-columns: 1fr; }
+}

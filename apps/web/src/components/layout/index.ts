@@ -1,1 +1,2 @@
-export { ClienteHeader } from './ClienteHeader';
+export { EncabezadoCliente } from './EncabezadoCliente';
+export { NavbarCliente } from './NavbarCliente';

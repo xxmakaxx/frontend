@@ -1,93 +1,36 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { Usuario, AuthResponse } from '../types';
-import { autenticacionEndpoints } from '../api/endpoints';
+import { iniciarSesion as apiIniciarSesion, registrarUsuario as apiRegistrar } from '../api/endpoints/autenticacion';
+import type { Usuario, DatosRegistro } from '../tipos';
 
-interface AutenticacionStore {
-  token: string | null;
+interface EstadoAutenticacion {
   usuario: Usuario | null;
-  cargando: boolean;
-  error: string | null;
-  iniciarSesion: (email: string, password: string) => Promise<void>;
-  registrarse: (nombre: string, email: string, password: string, telefono?: string) => Promise<void>;
+  token: string | null;
+  estaAutenticado: boolean;
+  iniciarSesion: (email: string, clave: string) => Promise<void>;
+  registrar: (datos: DatosRegistro) => Promise<void>;
   cerrarSesion: () => void;
-  establecerToken: (token: string) => void;
-  establecerUsuario: (usuario: Usuario | null) => void;
 }
 
-export const usAutenticacionStore = create<AutenticacionStore>()(
+export const useAutenticacionStore = create<EstadoAutenticacion>()(
   persist(
     (set) => ({
-      token: null,
       usuario: null,
-      cargando: false,
-      error: null,
+      token: null,
+      estaAutenticado: false,
 
-      iniciarSesion: async (email: string, password: string) => {
-        set({ cargando: true, error: null });
-        try {
-          const respuesta = await autenticacionEndpoints.login({ email, password });
-          set({
-            token: respuesta.token,
-            usuario: respuesta.usuario,
-            cargando: false
-          });
-          localStorage.setItem('authToken', respuesta.token);
-        } catch (error) {
-          const mensaje = error instanceof Error ? error.message : 'Error desconocido';
-          set({
-            error: mensaje,
-            cargando: false
-          });
-          throw error;
-        }
+      iniciarSesion: async (email, clave) => {
+        const { usuario, token } = await apiIniciarSesion(email, clave);
+        set({ usuario, token, estaAutenticado: true });
       },
 
-      registrarse: async (nombre: string, email: string, password: string, telefono?: string) => {
-        set({ cargando: true, error: null });
-        try {
-          const respuesta = await autenticacionEndpoints.registro({
-            name: nombre,
-            email,
-            password,
-            phone: telefono
-          });
-          set({
-            token: respuesta.token,
-            usuario: respuesta.usuario,
-            cargando: false
-          });
-          localStorage.setItem('authToken', respuesta.token);
-        } catch (error) {
-          const mensaje = error instanceof Error ? error.message : 'Error desconocido';
-          set({
-            error: mensaje,
-            cargando: false
-          });
-          throw error;
-        }
+      registrar: async (datos) => {
+        const { usuario, token } = await apiRegistrar(datos);
+        set({ usuario, token, estaAutenticado: true });
       },
 
-      cerrarSesion: () => {
-        set({ token: null, usuario: null, error: null });
-        localStorage.removeItem('authToken');
-      },
-
-      establecerToken: (token: string) => {
-        set({ token });
-        localStorage.setItem('authToken', token);
-      },
-
-      establecerUsuario: (usuario: Usuario | null) => {
-        set({ usuario });
-      }
+      cerrarSesion: () => set({ usuario: null, token: null, estaAutenticado: false }),
     }),
-    {
-      name: 'autenticacion-storage',
-      partialize: (state) => ({
-        token: state.token,
-        usuario: state.usuario
-      })
-    }
+    { name: 'alamesa-autenticacion' }
   )
 );

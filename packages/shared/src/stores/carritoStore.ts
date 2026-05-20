@@ -1,86 +1,84 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { ItemCarrito } from '../types';
+import type { Plato, ItemCarrito } from '../tipos';
 
-interface CarritoStore {
+interface EstadoCarrito {
   items: ItemCarrito[];
   localId: string | null;
-  agregarItem: (item: ItemCarrito) => void;
-  eliminarItem: (platoId: string) => void;
+  costoEnvio: number;
+  agregarItem: (plato: Plato, localId: string, costoEnvio: number) => void;
+  quitarItem: (platoId: string) => void;
   actualizarCantidad: (platoId: string, cantidad: number) => void;
   vaciar: () => void;
-  obtenerTotal: () => number;
-  cambiarLocal: (nuevoLocalId: string) => void;
-  puedoAgregarDe: (localId: string) => boolean;
 }
 
-export const usCarritoStore = create<CarritoStore>()(
+export const useCarritoStore = create<EstadoCarrito>()(
   persist(
     (set, get) => ({
       items: [],
       localId: null,
+      costoEnvio: 0,
 
-      agregarItem: (item: ItemCarrito) => {
-        set((state) => {
-          const itemExistente = state.items.find((i) => i.platoId === item.platoId);
+      agregarItem: (plato, localId, costoEnvio) => {
+        const estado = get();
+        if (estado.localId && estado.localId !== localId) {
+          set({
+            items: [{ ...plato, cantidad: 1 }],
+            localId,
+            costoEnvio,
+          });
+          return;
+        }
+        const existente = estado.items.find(i => i.id === plato.id);
+        if (existente) {
+          set({
+            items: estado.items.map(i =>
+              i.id === plato.id ? { ...i, cantidad: i.cantidad + 1 } : i
+            ),
+            localId,
+            costoEnvio,
+          });
+        } else {
+          set({
+            items: [...estado.items, { ...plato, cantidad: 1 }],
+            localId,
+            costoEnvio,
+          });
+        }
+      },
 
-          if (itemExistente) {
-            return {
-              items: state.items.map((i) =>
-                i.platoId === item.platoId ? { ...i, cantidad: i.cantidad + item.cantidad } : i
-              )
-            };
-          }
+      quitarItem: (platoId) => {
+        const items = get().items.filter(i => i.id !== platoId);
+        set({ items, localId: items.length === 0 ? null : get().localId });
+      },
 
-          return {
-            items: [...state.items, item],
-            localId: item.platoId ? state.localId : state.localId
-          };
+      actualizarCantidad: (platoId, cantidad) => {
+        if (cantidad <= 0) {
+          get().quitarItem(platoId);
+          return;
+        }
+        set({
+          items: get().items.map(i => i.id === platoId ? { ...i, cantidad } : i),
         });
       },
 
-      eliminarItem: (platoId: string) => {
-        set((state) => ({
-          items: state.items.filter((i) => i.platoId !== platoId)
-        }));
-      },
-
-      actualizarCantidad: (platoId: string, cantidad: number) => {
-        if (cantidad <= 0) {
-          get().eliminarItem(platoId);
-          return;
-        }
-
-        set((state) => ({
-          items: state.items.map((i) =>
-            i.platoId === platoId ? { ...i, cantidad } : i
-          )
-        }));
-      },
-
-      vaciar: () => {
-        set({ items: [], localId: null });
-      },
-
-      obtenerTotal: () => {
-        return get().items.reduce((total, item) => total + item.precioUnitario * item.cantidad, 0);
-      },
-
-      cambiarLocal: (nuevoLocalId: string) => {
-        set({ items: [], localId: nuevoLocalId });
-      },
-
-      puedoAgregarDe: (localId: string): boolean => {
-        const state = get();
-        return state.localId === null || state.localId === localId;
-      }
+      vaciar: () => set({ items: [], localId: null, costoEnvio: 0 }),
     }),
-    {
-      name: 'carrito-storage',
-      partialize: (state) => ({
-        items: state.items,
-        localId: state.localId
-      })
-    }
+    { name: 'alamesa-carrito' }
   )
 );
+
+export const useCarritoSubtotal = () =>
+  useCarritoStore(state => state.items.reduce((s, i) => s + i.price * i.cantidad, 0));
+
+export const useCarritoCantidad = () =>
+  useCarritoStore(state => state.items.reduce((s, i) => s + i.cantidad, 0));
+
+export const useCarritoTotal = () => {
+  const subtotal = useCarritoSubtotal();
+  const { costoEnvio, items } = useCarritoStore(state => ({
+    costoEnvio: state.costoEnvio,
+    items: state.items,
+  }));
+  return subtotal + (items.length > 0 ? costoEnvio : 0);
+};

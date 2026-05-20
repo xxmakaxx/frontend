@@ -1,82 +1,75 @@
 import { useState } from 'react';
-import { useLocales } from '@alamesa/shared';
-import { Card, Input } from '@/components/base';
+import { useNavigate } from 'react-router-dom';
+import { useLocales, type FiltrosLocales } from '@alamesa/shared';
+import { EncabezadoCliente } from '../components/layout/EncabezadoCliente';
+import { NavbarCliente } from '../components/layout/NavbarCliente';
+import { PanelFiltros } from '../components/sections/PanelFiltros';
+import { LocalCard } from '../components/sections/LocalCard';
+import { DrawerCarrito } from '../components/sections/DrawerCarrito';
 import './PaginaInicio.css';
-import { Link } from 'react-router';
 
-export const PaginaInicio = () => {
+export default function PaginaInicio() {
+  const { data: locales = [], isPending } = useLocales();
+  const [filtros, setFiltros] = useState<FiltrosLocales>({});
   const [busqueda, setBusqueda] = useState('');
-  const [categoria, setCategoria] = useState('todos');
-  const { data: locales = [], isLoading, error } = useLocales({
-    busqueda: busqueda || undefined,
-    categoria: categoria !== 'todos' ? categoria : undefined
+  const [carritoAbierto, setCarritoAbierto] = useState(false);
+  const navigate = useNavigate();
+
+  const categorias = [...new Set(locales.map(l => l.category))].sort();
+
+  const localesFiltrados = locales.filter((l) => {
+    if (busqueda && !l.name.toLowerCase().includes(busqueda.toLowerCase()) && !l.category.toLowerCase().includes(busqueda.toLowerCase())) return false;
+    if (filtros.categoria && l.category !== filtros.categoria) return false;
+    if (filtros.soloAbiertos && !l.isOpen) return false;
+    if (filtros.calificacionMin && l.rating < filtros.calificacionMin) return false;
+    return true;
   });
 
-  const categorias = ['todos', 'Pizzería', 'Sushi', 'Hamburguesas', 'Cevichería', 'Pastas'];
-
   return (
-    <div className="inicio-pagina">
-      <div className="inicio-pagina__contenedor">
-        <div className="inicio-pagina__busqueda">
-          <Input
-            type="text"
-            placeholder="Buscar locales..."
-            value={busqueda}
-            onChange={(e) => setBusqueda(e.target.value)}
-          />
-        </div>
+    <div className="pagina-inicio">
+      <EncabezadoCliente
+        onCartOpen={() => setCarritoAbierto(true)}
+        searchValue={busqueda}
+        onSearchChange={(e) => setBusqueda(e.target.value)}
+      />
+      <NavbarCliente />
 
-        <div className="inicio-pagina__filtros">
-          {categorias.map((cat) => (
-            <button
-              key={cat}
-              className={`filtro-boton ${categoria === cat ? 'filtro-boton--activo' : ''}`}
-              onClick={() => setCategoria(cat)}
-            >
-              {cat}
-            </button>
-          ))}
-        </div>
+      <div className="pagina-inicio__cuerpo">
+        <PanelFiltros
+          categorias={categorias}
+          filtros={filtros}
+          onFiltroChange={setFiltros}
+        />
 
-        {isLoading && <div className="inicio-pagina__cargando">Cargando locales...</div>}
-        {error && <div className="inicio-pagina__error">Error al cargar los locales</div>}
-
-        <div className="inicio-pagina__locales">
-          {locales.map((local) => (
-            <Link key={local.id} to={`/local/${local.id}`} className="local-tarjeta-link">
-              <Card className="local-tarjeta">
-                <div className="local-tarjeta__imagen">
-                  <img src={local.image} alt={local.name} />
-                  {!local.isOpen && <div className="local-tarjeta__cerrado">Cerrado</div>}
-                </div>
-                <div className="local-tarjeta__contenido">
-                  <h3 className="local-tarjeta__nombre">{local.name}</h3>
-                  <p className="local-tarjeta__categoria">{local.category}</p>
-                  <p className="local-tarjeta__descripcion">{local.description}</p>
-
-                  <div className="local-tarjeta__meta">
-                    <div className="local-tarjeta__rating">
-                      ⭐ {local.rating} ({local.reviews})
-                    </div>
-                    <div className="local-tarjeta__tiempo">
-                      ⏱ {local.deliveryTime}min
-                    </div>
-                    <div className="local-tarjeta__distancia">
-                      📍 {local.distance}km
-                    </div>
-                  </div>
-                </div>
-              </Card>
-            </Link>
-          ))}
-        </div>
-
-        {locales.length === 0 && !isLoading && (
-          <div className="inicio-pagina__vacio">
-            <p>No se encontraron locales</p>
+        <main className="pagina-inicio__main">
+          <div className="pagina-inicio__top">
+            <h2 className="pagina-inicio__titulo">Locales Cercanos</h2>
+            <span className="pagina-inicio__contador body-small">
+              {localesFiltrados.length} resultado{localesFiltrados.length !== 1 ? 's' : ''}
+            </span>
           </div>
-        )}
+
+          {isPending ? (
+            <div className="pagina-inicio__estado">Cargando locales...</div>
+          ) : localesFiltrados.length === 0 ? (
+            <div className="pagina-inicio__estado">
+              <p>No encontramos locales con esos filtros.</p>
+            </div>
+          ) : (
+            <div className="locales-grid">
+              {localesFiltrados.map((local) => (
+                <LocalCard
+                  key={local.id}
+                  local={local}
+                  onClick={() => navigate(`/local/${local.id}`)}
+                />
+              ))}
+            </div>
+          )}
+        </main>
       </div>
+
+      <DrawerCarrito isOpen={carritoAbierto} onClose={() => setCarritoAbierto(false)} />
     </div>
   );
-};
+}

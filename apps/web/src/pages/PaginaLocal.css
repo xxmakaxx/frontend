@@ -1,0 +1,22 @@
+.pagina-local { min-height: 100vh; background: var(--color-background); }
+.pagina-local__cargando { display: flex; align-items: center; justify-content: center; min-height: 40vh; color: var(--color-text-secondary); }
+.pagina-local__cuerpo { max-width: var(--container-max-width); margin: 0 auto; padding: 0 var(--space-6) var(--space-10); }
+
+.promos-section { margin-bottom: var(--space-6); }
+.promos-section__titulo { font-size: 1rem; font-weight: 700; margin-bottom: var(--space-4); }
+.promos-lista { display: flex; gap: var(--space-4); flex-wrap: wrap; }
+.promo-card { display: flex; align-items: center; gap: var(--space-4); background: linear-gradient(135deg, #fff7ed, #fef3c7); border: 1px solid rgba(244, 121, 32, 0.2); border-radius: var(--border-radius-lg); padding: var(--space-4) var(--space-5); flex: 1; min-width: 240px; max-width: 380px; }
+.promo-card__descuento { font-size: 1.5rem; font-weight: 800; color: var(--color-primary); white-space: nowrap; }
+.promo-card__nombre { font-size: var(--font-size-sm); font-weight: 700; margin-bottom: var(--space-1); }
+.promo-card__desc { color: var(--color-text-secondary); }
+
+.categoria-tabs { display: flex; gap: var(--space-3); flex-wrap: wrap; margin-bottom: var(--space-5); border-bottom: 1px solid var(--color-border); padding-bottom: var(--space-4); }
+.categoria-tab { background: none; border: 1px solid var(--color-border); border-radius: var(--border-radius-full); padding: var(--space-2) var(--space-5); font-size: var(--font-size-sm); font-weight: 500; cursor: pointer; font-family: var(--font-family); color: var(--color-text-secondary); transition: all 0.2s; }
+.categoria-tab--activo { background: var(--color-primary); color: white; border-color: var(--color-primary); }
+.categoria-tab:hover:not(.categoria-tab--activo) { border-color: var(--color-primary); color: var(--color-primary); }
+
+.pagina-local__info-bar { display: flex; gap: var(--space-5); margin-bottom: var(--space-6); flex-wrap: wrap; color: var(--color-text-secondary); }
+.platos-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: var(--space-5); }
+
+@media (max-width: 640px) { .pagina-local__cuerpo { padding: 0 var(--space-4) var(--space-8); } .platos-grid { grid-template-columns: 1fr 1fr; gap: var(--space-3); } }
+@media (max-width: 400px) { .platos-grid { grid-template-columns: 1fr; } }

@@ -1,0 +1,10 @@
+.panel-filtros { width: var(--sidebar-width); padding: var(--space-5); background: var(--color-background-alt); border-radius: var(--border-radius-lg); height: fit-content; position: sticky; top: calc(var(--header-height) + var(--navbar-height) + var(--space-5)); flex-shrink: 0; }
+.panel-filtros__titulo { font-size: 1rem; font-weight: 700; margin-bottom: var(--space-5); }
+.filtro-grupo { margin-bottom: var(--space-5); padding-bottom: var(--space-5); border-bottom: 1px solid var(--color-border); }
+.filtro-grupo:last-of-type { border-bottom: none; }
+.filtro-etiqueta { font-weight: 600; font-size: var(--font-size-sm); margin-bottom: var(--space-3); display: block; }
+.filtro-checkbox { display: flex; align-items: center; gap: var(--space-2); margin-bottom: var(--space-2); cursor: pointer; font-size: var(--font-size-sm); }
+.filtro-checkbox input { cursor: pointer; accent-color: var(--color-primary); }
+
+@media (max-width: 1024px) { .panel-filtros { width: 220px; } }
+@media (max-width: 768px) { .panel-filtros { display: none; } }

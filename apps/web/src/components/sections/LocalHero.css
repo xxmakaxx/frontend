@@ -1,0 +1,10 @@
+.local-hero { position: relative; height: 280px; overflow: hidden; margin-bottom: var(--space-7); }
+.local-hero__img { width: 100%; height: 100%; object-fit: cover; }
+.local-hero__overlay { position: absolute; bottom: 0; left: 0; right: 0; background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.75)); padding: var(--space-10) var(--space-6) var(--space-6); color: white; }
+.local-hero__content { max-width: var(--container-max-width); margin: 0 auto; }
+.local-hero__logo { width: 56px; height: 56px; border-radius: var(--border-radius-lg); border: 3px solid white; margin-bottom: var(--space-3); object-fit: cover; }
+.local-hero__nombre { font-size: 1.75rem; font-weight: 700; margin-bottom: var(--space-2); }
+.local-hero__desc { font-size: var(--font-size-sm); opacity: 0.9; margin-bottom: var(--space-3); }
+.local-hero__meta { display: flex; gap: var(--space-4); font-size: var(--font-size-sm); align-items: center; flex-wrap: wrap; }
+
+@media (max-width: 640px) { .local-hero { height: 200px; } .local-hero__nombre { font-size: 1.3rem; } }
