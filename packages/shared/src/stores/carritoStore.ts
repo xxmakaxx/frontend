@@ -76,9 +76,9 @@ export const useCarritoCantidad = () =>
 
 export const useCarritoTotal = () => {
   const subtotal = useCarritoSubtotal();
-  const { costoEnvio, items } = useCarritoStore(state => ({
-    costoEnvio: state.costoEnvio,
-    items: state.items,
-  }));
-  return subtotal + (items.length > 0 ? costoEnvio : 0);
+  //  Pedimos las propiedades por separado para no generar objetos nuevos en el render
+  const costoEnvio = useCarritoStore(state => state.costoEnvio);
+  const tieneItems = useCarritoStore(state => state.items.length > 0);
+
+  return subtotal + (tieneItems ? costoEnvio : 0);
 };
